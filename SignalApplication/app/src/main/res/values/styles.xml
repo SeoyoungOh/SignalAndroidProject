@@ -6,6 +6,16 @@
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
+
+        <!-- No Title and Full Screen-->
+        <item name="windowNoTitle">true</item>
+        <item name="windowActionBar">false</item>
+    </style>
+
+    <style name="textTheme">
+        <item name="android:background">@color/fill_text_background</item>
+        <item name="colorControlNormal">@color/set_underline_color</item>
+        <item name="colorControlActivated">@color/colorPrimary</item>
     </style>
 
 </resources>
