@@ -1,4 +1,4 @@
-package org.androidtown.signalapplication;
+package org.androidtown.signalapplication.Activities;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
@@ -32,6 +32,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
+import org.androidtown.signalapplication.R;
 
 import java.util.ArrayList;
 import java.util.List;
