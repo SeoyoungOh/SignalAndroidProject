@@ -1,6 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#3F51B5</color>
-    <color name="colorPrimaryDark">#303F9F</color>
-    <color name="colorAccent">#FF4081</color>
+    <color name="colorPrimary">#3f4a6b</color>
+    <color name="colorPrimaryDark">#555555</color>
+    <color name="colorPrimaryLight">#ffffff</color>
+    <color name="colorAccent">#f8bdd0</color>
+    <color name="colorAccentDark">#ff6666</color>
+    <color name="colorAccentLight">#ffcc66</color>
+
+    <color name="navigation_item_color">#51032d</color>
+    <color name="fill_text_background">#f8f8f8</color>
+    <color name="set_sideline_color">#7e828e</color>
+    <color name="set_underline_color">#d8d8d8</color>
+
+    <color name="login_button_color">#51d7ed</color>
+    <color name="facebook_login_button">#334f8d</color>
+    <color name="kakotalk_login_button">#f9dc03</color>
 </resources>
