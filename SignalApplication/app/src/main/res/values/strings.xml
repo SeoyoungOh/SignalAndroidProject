@@ -21,6 +21,17 @@
     <string name="facebook_login">Facebook</string>
     <string name="kakaotalk_login">Kakao</string>
 
+    <string name="remember_login">Remember login</string>
+
+    <!-- Strings related to Register-->
+    <string name="register_id">아이디</string>
+    <string name="register_pw">비밀번호</string>
+    <string name="register_pw_con">비밀번호 확인</string>
+    <string name="register_name">이름</string>
+    <string name="register_mail">메일</string>
+    <string name="register_job">직업</string>
+
+
     <string name="title_activity_main">MainActivity</string>
     <string name="title_home">Home</string>
     <string name="title_dashboard">Dashboard</string>

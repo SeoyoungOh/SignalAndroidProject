@@ -3,6 +3,8 @@ package org.androidtown.signalapplication;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
+import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
@@ -23,10 +25,12 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -36,6 +40,10 @@ import static android.Manifest.permission.READ_CONTACTS;
 
 /**
  * A login screen that offers login via email/password.
+ *
+ * - JSON
+ * - Facebook
+ * - Kakaotalk
  */
 public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<Cursor> {
 
@@ -61,6 +69,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     private EditText mPasswordView;
     private View mProgressView;
     private View mLoginFormView;
+    private LinearLayout mEmailLoginView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -82,6 +91,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             }
         });
 
+        // 로그인 버튼 눌렀을 때
         Button mEmailSignInButton = (Button) findViewById(R.id.email_sign_in_button);
         mEmailSignInButton.setOnClickListener(new OnClickListener() {
             @Override
@@ -90,8 +100,55 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             }
         });
 
+        // 회원가입 버튼 눌렀을 때
+        Button mJoinInButton = (Button) findViewById(R.id.join_button);
+        mJoinInButton.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(LoginActivity.this, JoinActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        // 아이디찾기 버튼 눌렀을 때
+        Button mFindIdButton = (Button) findViewById(R.id.find_id);
+        mFindIdButton.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(LoginActivity.this, FindIdActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        // 비밀번호 찾기 버튼 눌렀을 때
+        Button mFindPwButton = (Button) findViewById(R.id.find_pw);
+        mFindIdButton.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(LoginActivity.this, FindPwActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        // 페이스북 버튼 눌렀을 때
+        Button mFacebookButton = (Button) findViewById(R.id.facebook_button);
+
+        // 카카오 버튼 눌렀을 때
+        Button mKakaoButton = (Button) findViewById(R.id.kakao_button);
+
+
         mLoginFormView = findViewById(R.id.login_form);
         mProgressView = findViewById(R.id.login_progress);
+
+        //키보드 올라왔을 때 바탕 터치하면 키보드 내려가기
+        mEmailLoginView = (LinearLayout)findViewById(R.id.email_login_form);
+        mEmailLoginView.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                inputMethodManager.hideSoftInputFromWindow(mEmailView.getWindowToken(), 0);
+            }
+        });
     }
 
     private void populateAutoComplete() {
