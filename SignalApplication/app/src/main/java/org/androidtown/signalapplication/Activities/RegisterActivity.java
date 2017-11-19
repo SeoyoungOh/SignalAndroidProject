@@ -1,16 +1,30 @@
 package org.androidtown.signalapplication.Activities;
 
+import android.app.Activity;
+import android.content.Intent;
+import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.net.Uri;
+import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import org.androidtown.signalapplication.R;
 
+import java.io.FileNotFoundException;
+import java.io.IOException;
+
 public class RegisterActivity extends AppCompatActivity {
+
+
+    private ImageView mUserProfileImg;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,7 +39,7 @@ public class RegisterActivity extends AppCompatActivity {
         EditText mUserPhone = (EditText) findViewById(R.id.user_phone);
 
         // img click -> image crop
-        ImageView mUserProfileImg = (ImageView) findViewById(R.id.add_profile_img);
+        mUserProfileImg = (ImageView) findViewById(R.id.add_profile_img);
 
         // keyboard
         LinearLayout mRegistLayout = (LinearLayout) findViewById(R.id.register_layout);
@@ -35,4 +49,7 @@ public class RegisterActivity extends AppCompatActivity {
 
 
     }
+
+
+
 }
