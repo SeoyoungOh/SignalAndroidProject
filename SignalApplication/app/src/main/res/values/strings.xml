@@ -20,5 +20,11 @@
     <string name="kakao_login">KAKAO</string>
 
     <!-- Strings related to Register -->
-    <string name="welcome_string">당신을 표현해보세요</string>
+    <string name="welcome_string">당신을   표현해보세요</string>
+    <string name="regist_id">아이디</string>
+    <string name="regist_pw">비밀번호</string>
+    <string name="regist_pw_con">비밀번호 확인</string>
+    <string name="regist_name">이름</string>
+    <string name="regist_job">직업</string>
+    <string name="regist_phone_num">휴대전화</string>
 </resources>

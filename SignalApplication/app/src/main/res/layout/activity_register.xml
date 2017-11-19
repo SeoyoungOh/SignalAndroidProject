@@ -6,11 +6,17 @@
     android:layout_height="match_parent"
     tools:context="org.androidtown.signalapplication.Activities.RegisterActivity"
     android:orientation="vertical"
-    android:background="@mipmap/background">
+    android:background="@mipmap/background"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingBottom="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_horizontal_margin"
+    android:id="@+id/register_layout">
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:scrollbars="none">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -22,83 +28,105 @@
                 android:layout_height="match_parent"
                 android:orientation="horizontal"
                 android:layout_marginTop="@dimen/activity_horizontal_margin"
-                android:paddingLeft="@dimen/activity_horizontal_margin"
-                android:paddingRight="@dimen/activity_horizontal_margin">
+                android:weightSum="1">
 
                 <TextView
                     android:id="@+id/textView2"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
+                    android:layout_weight="0.76"
                     android:text="@string/welcome_string"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Headline"
                     android:textColor="@color/colorPrimary"
-                    android:textStyle="bold"
-                    android:textAppearance="@style/TextAppearance.AppCompat.Headline" />
+                    android:textSize="40dp"
+                    android:textStyle="bold" />
 
-                <ImageButton
+                <ImageView
                     android:id="@+id/add_profile_img"
-                    android:layout_width="wrap_content"
-                    android:layout_height="99dp"
+                    android:layout_width="66dp"
+                    android:layout_height="64dp"
+                    android:elevation="0dp"
                     app:srcCompat="@drawable/ic_addphoto"
-                    />
+                    android:layout_marginLeft="20dp"
+                    android:layout_weight="0.27" />
 
             </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:layout_marginTop="@dimen/activity_horizontal_margin">
 
                 <EditText
                     android:id="@+id/user_id"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="50dp"
+                    android:background="@drawable/boxtheme"
                     android:ems="10"
-                    android:inputType="textEmailAddress" />
+                    android:hint="@string/regist_id"
+                    android:inputType="textEmailAddress"
+                    android:layout_marginTop="@dimen/activity_horizontal_margin"/>
 
                 <EditText
                     android:id="@+id/user_pw"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="50dp"
                     android:ems="10"
-                    android:inputType="textPassword" />
+                    android:inputType="textPassword"
+                    android:hint="@string/regist_pw"
+                    android:background="@drawable/boxtheme"
+                    android:layout_marginTop="@dimen/activity_horizontal_margin"/>
 
                 <EditText
                     android:id="@+id/user_pw_con"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="50dp"
                     android:ems="10"
-                    android:inputType="textPassword" />
+                    android:inputType="textPassword"
+                    android:hint="@string/regist_pw_con"
+                    android:background="@drawable/boxtheme"
+                    android:layout_marginTop="@dimen/activity_horizontal_margin"/>
 
                 <EditText
                     android:id="@+id/user_name"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="50dp"
                     android:ems="10"
                     android:inputType="textPersonName"
-                    android:text="Name" />
+                    android:hint="@string/regist_name"
+                    android:background="@drawable/boxtheme"
+                    android:layout_marginTop="@dimen/activity_horizontal_margin"/>
 
                 <EditText
                     android:id="@+id/user_occu"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="50dp"
                     android:ems="10"
                     android:inputType="textPersonName"
-                    android:text="Name" />
+                    android:hint="@string/regist_job"
+                    android:background="@drawable/boxtheme"
+                    android:layout_marginTop="@dimen/activity_horizontal_margin"/>
 
                 <EditText
                     android:id="@+id/user_phone"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="50dp"
                     android:ems="10"
-                    android:inputType="phone" />
+                    android:inputType="phone"
+                    android:hint="@string/regist_phone_num"
+                    android:background="@drawable/boxtheme"
+                    android:layout_marginTop="@dimen/activity_horizontal_margin"/>
             </LinearLayout>
 
             <Button
                 android:id="@+id/register_button"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Button" />
+                android:layout_height="50dp"
+                android:text="Button"
+                android:layout_marginTop="@dimen/activity_horizontal_margin"
+                android:background="@color/login_button_color"
+                android:textColor="@color/colorPrimary"/>
 
         </LinearLayout>
     </ScrollView>
