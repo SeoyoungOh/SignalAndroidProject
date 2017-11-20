@@ -23,81 +23,58 @@ import org.androidtown.signalapplication.R;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 
-public class RegisterActivity extends AppCompatActivity {
+public class RegisterActivity extends AppCompatActivity implements View.OnClickListener{
 
-    final int REQ_CODE_SELECT_IMAGE = 100;
+    final static int REQ_CODE_SELECT_IMAGE = 100;
+
+    LinearLayout mRegistLayout;
     ImageView mUserProfileImg;
+    EditText mUserID, mUserPW, mUserPWCon, mUserName, mUserJob, mUserPhone;
+    Button mRegisterButton;
+
+    String mCurrentImgPath;
+    Uri mImgUri;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
+        init();
+    }
 
-        final EditText mUserID = (EditText) findViewById(R.id.user_id);
-        EditText mUserPW = (EditText) findViewById(R.id.user_pw);
-        EditText mUserPWCon = (EditText) findViewById(R.id.user_pw_con);
-        EditText mUserName = (EditText) findViewById(R.id.user_name);
-        EditText mUserJob = (EditText) findViewById(R.id.user_occu);
-        EditText mUserPhone = (EditText) findViewById(R.id.user_phone);
+    private void init() {
 
-        // img click -> image round crop -> multipart/form-data
+        mUserID = (EditText) findViewById(R.id.user_id);
+        mUserPW = (EditText) findViewById(R.id.user_pw);
+        mUserPWCon = (EditText) findViewById(R.id.user_pw_con);
+        mUserName = (EditText) findViewById(R.id.user_name);
+        mUserJob = (EditText) findViewById(R.id.user_occu);
+        mUserPhone = (EditText) findViewById(R.id.user_phone);
+
         mUserProfileImg = (ImageView) findViewById(R.id.add_profile_img);
-        mUserProfileImg.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                switch (view.getId()){
-                    case R.id.add_profile_img:
-                        Intent intent = new Intent(RegisterActivity.this, ImageActivity.class);
-                        startActivityForResult(intent, REQ_CODE_SELECT_IMAGE);
-                        break;
-                    default:
-                        break;
-                }
+        mRegistLayout = (LinearLayout) findViewById(R.id.register_layout);
+        mRegisterButton = (Button) findViewById(R.id.register_button);
 
-            }
-        });
-
-
-        // keyboard
-        LinearLayout mRegistLayout = (LinearLayout) findViewById(R.id.register_layout);
-        mRegistLayout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-                inputMethodManager.hideSoftInputFromWindow(mUserID.getWindowToken(), 0);
-            }
-        });
-
-        // send server & get response
-        Button mRegisterButton = (Button) findViewById(R.id.register_button);
-        mRegisterButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-            }
-        });
-
+        mUserProfileImg.setOnClickListener(this);
+        mRegistLayout.setOnClickListener(this);
+        mRegisterButton.setOnClickListener(this);
 
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data){
+
         Toast.makeText(getBaseContext(), "resultCode : "+resultCode, Toast.LENGTH_SHORT).show();
 
         if(requestCode == REQ_CODE_SELECT_IMAGE){
             if(resultCode==Activity.RESULT_OK){
                 //데이터 받기
                 try{
-                    //Uri에서 이미지 이름 얻어오기
-                    //String imgName = getImageNametoUri(data.getData());
-
-                    //이미지를 비트맵으로 받아오기
+                    Intent intent = getIntent();
+                    mCurrentImgPath = intent.getStringExtra("imgUri");
+                    mImgUri = Uri.parse(mCurrentImgPath);
                     Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), data.getData());
-
-                    //bitmap을 imageview에
                     mUserProfileImg.setImageBitmap(bitmap);
-
-                    //Toast.makeText(getBaseContext(), "imgName : "+imgName, Toast.LENGTH_SHORT).show();
 
                 } catch (FileNotFoundException e) {
                     e.printStackTrace();
@@ -112,6 +89,26 @@ public class RegisterActivity extends AppCompatActivity {
     }
 
 
+    @Override
+    public void onClick(View view) {
+        switch(view.getId()){
+            case R.id.add_profile_img:
+                // img click -> 이미지 처리 액티비티 -> 이미지 받아오기 > 이미지뷰에 보여주기 > multipart-formdata로 서버 전송
+                Intent intent = new Intent(RegisterActivity.this, ImageActivity.class);
+                startActivityForResult(intent, REQ_CODE_SELECT_IMAGE);
+                break;
 
+            case R.id.register_layout:
+                // keyboard
+                InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                inputMethodManager.hideSoftInputFromWindow(mUserID.getWindowToken(), 0);
+                break;
 
+            case R.id.register_button:
+                // send server & get response
+                break;
+
+        }
+
+    }
 }
