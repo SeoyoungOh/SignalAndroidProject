@@ -26,7 +26,10 @@
             android:name=".Activities.LoginActivity"
             android:label="@string/title_activity_login" />
         <activity android:name=".Activities.FindIDActivity" />
-        <activity android:name=".Activities.FindPWActivity"></activity>
+        <activity android:name=".Activities.FindPWActivity" />
+        <activity
+            android:name=".Activities.ImageActivity"
+            android:theme="@style/PopupTheme"></activity>
     </application>
 
 </manifest>

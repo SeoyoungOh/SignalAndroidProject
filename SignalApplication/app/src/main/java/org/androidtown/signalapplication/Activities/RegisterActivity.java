@@ -25,8 +25,8 @@ import java.io.IOException;
 
 public class RegisterActivity extends AppCompatActivity {
 
-
-    private ImageView mUserProfileImg;
+    final int REQ_CODE_SELECT_IMAGE = 100;
+    ImageView mUserProfileImg;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,6 +42,21 @@ public class RegisterActivity extends AppCompatActivity {
 
         // img click -> image round crop -> multipart/form-data
         mUserProfileImg = (ImageView) findViewById(R.id.add_profile_img);
+        mUserProfileImg.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                switch (view.getId()){
+                    case R.id.add_profile_img:
+                        Intent intent = new Intent(RegisterActivity.this, ImageActivity.class);
+                        startActivityForResult(intent, REQ_CODE_SELECT_IMAGE);
+                        break;
+                    default:
+                        break;
+                }
+
+            }
+        });
+
 
         // keyboard
         LinearLayout mRegistLayout = (LinearLayout) findViewById(R.id.register_layout);
@@ -64,6 +79,38 @@ public class RegisterActivity extends AppCompatActivity {
 
 
     }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data){
+        Toast.makeText(getBaseContext(), "resultCode : "+resultCode, Toast.LENGTH_SHORT).show();
+
+        if(requestCode == REQ_CODE_SELECT_IMAGE){
+            if(resultCode==Activity.RESULT_OK){
+                //데이터 받기
+                try{
+                    //Uri에서 이미지 이름 얻어오기
+                    //String imgName = getImageNametoUri(data.getData());
+
+                    //이미지를 비트맵으로 받아오기
+                    Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), data.getData());
+
+                    //bitmap을 imageview에
+                    mUserProfileImg.setImageBitmap(bitmap);
+
+                    //Toast.makeText(getBaseContext(), "imgName : "+imgName, Toast.LENGTH_SHORT).show();
+
+                } catch (FileNotFoundException e) {
+                    e.printStackTrace();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                } catch (Exception e){
+                    e.printStackTrace();
+                }
+
+            }
+        }
+    }
+
 
 
 
