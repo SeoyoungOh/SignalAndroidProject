@@ -25,8 +25,14 @@ import android.widget.Toast;
 import org.androidtown.signalapplication.CircleImageView;
 import org.androidtown.signalapplication.R;
 
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.TimeoutException;
+
+import io.swagger.client.ApiException;
+import io.swagger.client.api.AccountApi;
 
 public class RegisterActivity extends AppCompatActivity implements View.OnClickListener{
 
@@ -39,6 +45,10 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
 
     String mCurrentImgPath;
     Uri mImgUri;
+
+    String userId, userPw, userPwC, userName, userJob, userPhone;
+
+    File userProfile;
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
@@ -112,9 +122,40 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
 
             case R.id.register_button:
                 // send server & get response
+                setRegisterContents();
+
+                if(userPw.equals(userPwC)){
+                    AccountApi accountApi = new AccountApi();
+                    try {
+                        accountApi.accountPost(userId, userPw, userProfile, userName, userJob, userPhone);
+                    } catch (TimeoutException e) {
+                        e.printStackTrace();
+                    } catch (ExecutionException e) {
+                        e.printStackTrace();
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    } catch (ApiException e) {
+                        e.printStackTrace();
+                    }
+                }
+                else {
+
+                }
+
+
                 break;
 
         }
 
+    }
+
+    public void setRegisterContents() {
+        userId = mUserID.getText().toString();
+        userPw = mUserPW.getText().toString();
+        userPwC = mUserPWCon.getText().toString();
+        userName = mUserName.getText().toString();
+        userJob = mUserJob.getText().toString();
+        userPhone = mUserPhone.getText().toString();
+        userProfile = new File(mImgUri.toString());
     }
 }
