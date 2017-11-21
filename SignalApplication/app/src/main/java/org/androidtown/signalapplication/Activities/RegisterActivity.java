@@ -31,9 +31,6 @@ import java.io.IOException;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeoutException;
 
-import io.swagger.client.ApiException;
-import io.swagger.client.api.AccountApi;
-
 public class RegisterActivity extends AppCompatActivity implements View.OnClickListener{
 
     final static int REQ_CODE_SELECT_IMAGE = 100;
@@ -125,18 +122,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
                 setRegisterContents();
 
                 if(userPw.equals(userPwC)){
-                    AccountApi accountApi = new AccountApi();
-                    try {
-                        accountApi.accountPost(userId, userPw, userProfile, userName, userJob, userPhone);
-                    } catch (TimeoutException e) {
-                        e.printStackTrace();
-                    } catch (ExecutionException e) {
-                        e.printStackTrace();
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    } catch (ApiException e) {
-                        e.printStackTrace();
-                    }
+
                 }
                 else {
 

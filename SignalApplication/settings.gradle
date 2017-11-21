@@ -1,4 +1,2 @@
 include ':app'
 
-include ':android_client_generated'
-project(':android_client_generated').projectDir=new File('/Users/seoyoungoh/Documents/GitHub/SignalAndroidProject/android-client-generated')

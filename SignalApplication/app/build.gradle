@@ -18,9 +18,8 @@ android {
         }
     }
     packagingOptions {
-        exclude 'META-INF/LICENSE'
-        exclude 'META_INF/DEPENDENCIES'
-        exclude 'META-INF/DEPENDENCIES.txt'
+        exclude 'org/apache/http/version.properties'
+        exclude 'org/apache/http/client/version.properties'
     }
 }
 
@@ -33,5 +32,5 @@ dependencies {
     compile 'com.android.support.constraint:constraint-layout:1.0.2'
     compile 'com.android.support:design:26.+'
     testCompile 'junit:junit:4.12'
-    compile project(path: ':android_client_generated')
+
 }
