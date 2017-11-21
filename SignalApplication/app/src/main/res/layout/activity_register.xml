@@ -41,14 +41,13 @@
                     android:textSize="40dp"
                     android:textStyle="bold" />
 
-                <ImageView
+                <org.androidtown.signalapplication.CircleImageView
                     android:id="@+id/add_profile_img"
-                    android:layout_width="66dp"
-                    android:layout_height="64dp"
+                    android:layout_width="96dp"
+                    android:layout_height="96dp"
+                    android:layout_weight="0.27"
                     android:elevation="0dp"
-                    app:srcCompat="@drawable/ic_addphoto"
-                    android:layout_marginLeft="20dp"
-                    android:layout_weight="0.27" />
+                    app:srcCompat="@drawable/ic_addphoto" />
 
             </LinearLayout>
 

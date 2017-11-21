@@ -5,8 +5,12 @@ import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
+import android.graphics.drawable.ShapeDrawable;
+import android.graphics.drawable.shapes.OvalShape;
 import android.net.Uri;
+import android.os.Build;
 import android.provider.MediaStore;
+import android.support.annotation.RequiresApi;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -18,6 +22,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
+import org.androidtown.signalapplication.CircleImageView;
 import org.androidtown.signalapplication.R;
 
 import java.io.FileNotFoundException;
@@ -28,13 +33,14 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
     final static int REQ_CODE_SELECT_IMAGE = 100;
 
     LinearLayout mRegistLayout;
-    ImageView mUserProfileImg;
+    CircleImageView mUserProfileImg;
     EditText mUserID, mUserPW, mUserPWCon, mUserName, mUserJob, mUserPhone;
     Button mRegisterButton;
 
     String mCurrentImgPath;
     Uri mImgUri;
 
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -42,6 +48,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
         init();
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     private void init() {
 
         mUserID = (EditText) findViewById(R.id.user_id);
@@ -51,9 +58,11 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
         mUserJob = (EditText) findViewById(R.id.user_occu);
         mUserPhone = (EditText) findViewById(R.id.user_phone);
 
-        mUserProfileImg = (ImageView) findViewById(R.id.add_profile_img);
+        mUserProfileImg = (CircleImageView) findViewById(R.id.add_profile_img);
         mRegistLayout = (LinearLayout) findViewById(R.id.register_layout);
         mRegisterButton = (Button) findViewById(R.id.register_button);
+
+        mUserProfileImg.setImageDrawable(getResources().getDrawable(R.drawable.ic_profile_img, getApplicationContext().getTheme()));
 
         mUserProfileImg.setOnClickListener(this);
         mRegistLayout.setOnClickListener(this);
@@ -61,6 +70,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
 
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data){
 
