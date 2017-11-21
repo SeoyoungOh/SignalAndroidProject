@@ -11,6 +11,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.support.annotation.RequiresApi;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.content.FileProvider;
@@ -31,6 +32,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+@RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
 public class ImageActivity extends AppCompatActivity implements View.OnClickListener {
 
     private Button mCameraButton, mAlbumButton;
@@ -95,7 +97,7 @@ public class ImageActivity extends AppCompatActivity implements View.OnClickList
         }
 
         if(mImgFile != null) {
-            imgUri = FileProvider.getUriForFile(ImageActivity.this, "com.signalproject.provider", mImgFile);
+            imgUri = FileProvider.getUriForFile(ImageActivity.this, "SignalApplication.provider", mImgFile);
             intent.putExtra(MediaStore.EXTRA_OUTPUT, imgUri);
             startActivityForResult(intent, PIC_FROM_CAMERA);
         }
@@ -189,14 +191,15 @@ public class ImageActivity extends AppCompatActivity implements View.OnClickList
             });
         } else if(requestCode == CROP_FROM_CAMERA) {
             mCurrentImgPath = imgUri.toString();
-            Intent intent = new Intent(this, RegisterActivity.class);
+            Intent intent = new Intent();
             intent.putExtra("imgUri", mCurrentImgPath);
-            startActivity(intent);
+            setResult(RESULT_OK, intent);
+            finish();
         }
     }
 
     public void cropImg() {
-        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             this.grantUriPermission("com.android.camera", imgUri, Intent.FLAG_GRANT_WRITE_URI_PERMISSION | Intent.FLAG_GRANT_READ_URI_PERMISSION);
         }
         Intent intent = new Intent("com.android.camera.action.CROP");
@@ -230,13 +233,13 @@ public class ImageActivity extends AppCompatActivity implements View.OnClickList
             File folder = new File(Environment.getExternalStorageDirectory() + "/Signal/");
             File tmpFile = new File(folder.toString(), croppedFileName.getName());
 
-            imgUri = FileProvider.getUriForFile(ImageActivity.this, "com.signalproject.provider", tmpFile);
+            imgUri = FileProvider.getUriForFile(ImageActivity.this, "SignalApplication.provider", tmpFile);
             if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
                 intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
                 intent.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
             }
 
-            intent.putExtra("returndata", false);
+            intent.putExtra("returnData", false);
             intent.putExtra(MediaStore.EXTRA_OUTPUT, imgUri);
             intent.putExtra("outputFormat", Bitmap.CompressFormat.JPEG.toString());
 

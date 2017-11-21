@@ -70,17 +70,13 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
             if(resultCode==Activity.RESULT_OK){
                 //데이터 받기
                 try{
-                    Intent intent = getIntent();
-                    mCurrentImgPath = intent.getStringExtra("imgUri");
+                    mCurrentImgPath = data.getStringExtra("imgUri");
                     mImgUri = Uri.parse(mCurrentImgPath);
-                    Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), data.getData());
-                    mUserProfileImg.setImageBitmap(bitmap);
+                    mUserProfileImg.setImageURI(mImgUri);
 
-                } catch (FileNotFoundException e) {
-                    e.printStackTrace();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                } catch (Exception e){
+                }
+
+                catch (Exception e){
                     e.printStackTrace();
                 }
 
