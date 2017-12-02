@@ -2,12 +2,109 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context="org.androidtown.signalapplication.Fragments.MypageFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+    <LinearLayout
+        android:layout_width="368dp"
+        android:layout_height="495dp"
+        android:orientation="vertical"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginTop="8dp"
+        android:layout_marginLeft="8dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:layout_marginRight="8dp"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginBottom="8dp">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="128dp">
+
+            <org.androidtown.signalapplication.CircleImageView
+                android:id="@+id/publisher_image_at_fragment"
+                android:layout_width="70dp"
+                android:layout_height="70dp"
+                android:layout_above="@+id/make_meeting_button"
+                app:srcCompat="@drawable/ic_profile_img" />
+
+            <Button
+                android:id="@+id/make_meeting_button"
+                style="@style/Widget.AppCompat.Button.Colored"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="약속 만들기 버튼"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true" />
+
+            <LinearLayout
+                android:layout_width="200dp"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:layout_alignTop="@+id/publisher_image_at_fragment"
+                android:layout_centerHorizontal="true">
+
+                <TextView
+                    android:id="@+id/publisher_name_fragment"
+                    android:layout_width="194dp"
+                    android:layout_height="wrap_content"
+                    android:text="박보검" />
+
+                <TextView
+                    android:id="@+id/publisher_job_fragment"
+                    android:layout_width="197dp"
+                    android:layout_height="wrap_content"
+                    android:text="뮤지컬배우" />
+
+            </LinearLayout>
+
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="69dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true">
+
+                <TextView
+                    android:id="@+id/signal_notice_text"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="시그널이 도착했습니다" />
+
+                <Button
+                    android:id="@+id/signal_check_button"
+                    style="@style/Widget.AppCompat.Button.Borderless.Colored"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="시그널 확인하러 가기" />
+
+            </LinearLayout>
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/myPageFragmentRecyclerView"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+            </FrameLayout>
+        </RelativeLayout>
+    </LinearLayout>
 
 </FrameLayout>
