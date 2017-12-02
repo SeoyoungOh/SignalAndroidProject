@@ -33,11 +33,11 @@
         <activity android:name=".Activities.FindPWActivity" />
         <activity
             android:name=".Activities.ImageActivity"
-            android:theme="@style/PopupTheme"></activity>
+            android:theme="@style/PopupTheme" />
 
         <provider
-            android:authorities="SignalApplication.provider"
             android:name="android.support.v4.content.FileProvider"
+            android:authorities="SignalApplication.provider"
             android:exported="false"
             android:grantUriPermissions="true">
             <meta-data
@@ -45,7 +45,9 @@
                 android:resource="@xml/provider_paths" />
         </provider>
 
-
+        <activity
+            android:name=".Activities.MainActivity"
+            android:label="@string/title_activity_main"></activity>
     </application>
 
 </manifest>

@@ -13,6 +13,7 @@ import android.provider.MediaStore;
 import android.support.annotation.RequiresApi;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
@@ -24,16 +25,27 @@ import android.widget.Toast;
 
 import org.androidtown.signalapplication.CircleImageView;
 import org.androidtown.signalapplication.R;
+import org.androidtown.signalapplication.Server.Interface.AccountAPI;
+import org.androidtown.signalapplication.Server.Models.User;
 
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.lang.reflect.Member;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeoutException;
+
+import io.realm.Realm;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 public class RegisterActivity extends AppCompatActivity implements View.OnClickListener{
 
     final static int REQ_CODE_SELECT_IMAGE = 100;
+    public static final String BASE_URL = "http://ec2-52-79-36-12.ap-northeast-2.compute.amazonaws.com:7504/";
 
     LinearLayout mRegistLayout;
     CircleImageView mUserProfileImg;
@@ -47,12 +59,19 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
 
     File userProfile;
 
+    View focusView = null;
+
+    Realm realm;
+
+
+
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
         init();
+        realm = Realm.getDefaultInstance();
     }
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
@@ -118,30 +137,59 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
                 break;
 
             case R.id.register_button:
-                // send server & get response
-                setRegisterContents();
-
-                if(userPw.equals(userPwC)){
-
+                if(!mUserPW.getText().toString().equals(mUserPWCon.getText().toString())){
+                    mUserPWCon.setError("비밀번호가 일치하지 않습니다");
+                    return;
                 }
-                else {
+                if(mUserID.getText().toString().equals("")){
+                    mUserID.setError("필수 항목이 비워져 있습니다");
+                    return;
+                }
+                if(mUserPW.getText().toString().equals("")) {
+                    mUserPW.setError("필수 항목이 비워져 있습니다");
+                    return;
+                } else {
+                    insertDatabase();
 
+                    //돌려보내기
+                    Intent i = new Intent();
+                    i.putExtra("userID", mUserID.getText().toString());
+                    setResult(Activity.RESULT_OK, i);
+                    finish();
                 }
 
-
-                break;
 
         }
 
     }
 
-    public void setRegisterContents() {
-        userId = mUserID.getText().toString();
-        userPw = mUserPW.getText().toString();
-        userPwC = mUserPWCon.getText().toString();
-        userName = mUserName.getText().toString();
-        userJob = mUserJob.getText().toString();
-        userPhone = mUserPhone.getText().toString();
-        userProfile = new File(mImgUri.toString());
+    private void insertDatabase() {
+        realm.executeTransaction(new Realm.Transaction(){
+
+            @Override
+            public void execute(Realm realm) {
+                Number num = realm.where(User.class).max("id");
+                int nextID;
+                if (num == null) {
+                    nextID = 1;
+                } else {
+                    nextID = num.intValue()+1;
+                }
+                User user = realm.createObject(User.class, nextID);
+
+                user.setUsername(mUserID.getText().toString());
+                user.setPassword(mUserPW.getText().toString());
+            }
+
+        });
     }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        realm.close();
+    }
+
+
+
 }

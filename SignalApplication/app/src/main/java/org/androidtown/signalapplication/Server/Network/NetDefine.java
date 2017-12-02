@@ -1,4 +1,5 @@
-package org.androidtown.signalapplication.Server;
+package org.androidtown.signalapplication.Server.Network;
+
 
 public class NetDefine {
     public static final String PATH = "52.79.36.12";
