@@ -8,6 +8,8 @@ import android.view.WindowManager;
 
 import org.androidtown.signalapplication.R;
 
+import io.realm.Realm;
+
 public class IntroActivity extends AppCompatActivity {
 
     private Handler handler;
@@ -25,6 +27,8 @@ public class IntroActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        Realm.init(this);
 
         //Full Screen
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);

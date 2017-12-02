@@ -17,6 +17,8 @@ import org.androidtown.signalapplication.Fragments.MypageFragment;
 import org.androidtown.signalapplication.Fragments.NoticeFragment;
 import org.androidtown.signalapplication.R;
 
+import io.realm.Realm;
+
 public class MainActivity extends AppCompatActivity
         implements ViewPager.OnPageChangeListener,
         HomeFragment.OnFragmentInteractionListener,

@@ -3,6 +3,7 @@ package org.androidtown.signalapplication.Adapter;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.os.Build;
 import android.support.annotation.RequiresApi;
 import android.support.v4.content.ContextCompat;
@@ -19,31 +20,29 @@ import android.widget.TextView;
 import org.androidtown.signalapplication.CircleImageView;
 import org.androidtown.signalapplication.DataSetting.CardItem;
 import org.androidtown.signalapplication.R;
+import org.androidtown.signalapplication.Server.Models.Meeting;
 import org.androidtown.signalapplication.Server.Models.User;
 
 import java.util.List;
 
+import io.realm.RealmList;
 import io.realm.RealmResults;
 
-/**
- * Created by seoyoungoh on 2017. 12. 2..
- */
 
 public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHolder> {
-    Context context;
-    List<CardItem> items;
+
+    private RealmResults<Meeting> mDataset;
     int item_layout;
 
-    public RecyclerAdapter(Context context, List<CardItem> items, int item_layout) {
-        this.context = context;
-        this.items = items;
+    public RecyclerAdapter(RealmResults<Meeting> mDataset, int item_layout) {
+        this.mDataset = mDataset;
         this.item_layout = item_layout;
     }
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.meeting_card, null);
+        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.meeting_card, parent, false);
         return new ViewHolder(v);
     }
 
@@ -52,16 +51,17 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
     // 정보 및 이벤트 처리
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        final CardItem item = items.get(position);
-        Drawable drawable = ContextCompat.getDrawable(context, item.getImage());
+
+        RealmList<User> publisher = mDataset.get(position).getPublisher();
+        User publisherItem = publisher.get(position);
 
 
         // 입력받은 내용 담기
-        holder.image.setBackground(drawable);
-        holder.userName.setText(item.getUserName());
-        holder.userTitle.setText(item.getUserTitle());
-        holder.meetingTitle.setText(item.getMeetingTitle());
-        holder.meetingContents.setText(item.getMeetingContents());
+        holder.image.setImageURI(Uri.parse(publisherItem.getProfilePhoto()));
+        holder.userName.setText(publisherItem.getUsername());
+        holder.userTitle.setText(publisherItem.getJob());
+        holder.meetingTitle.setText(mDataset.get(position).getTitle());
+        holder.meetingContents.setText(mDataset.get(position).getContent());
 
         // 프로필 터치하면 퍼블리셔 페이지로 이동
         holder.rl_publisher.setOnClickListener(new View.OnClickListener(){
@@ -101,7 +101,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
 
     @Override
     public int getItemCount() {
-        return this.items.size();
+        return this.mDataset.size();
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {

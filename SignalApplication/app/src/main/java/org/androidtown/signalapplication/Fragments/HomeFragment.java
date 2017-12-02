@@ -12,11 +12,21 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import org.androidtown.signalapplication.Adapter.RecyclerAdapter;
+import org.androidtown.signalapplication.CircleImageView;
 import org.androidtown.signalapplication.DataSetting.CardItem;
 import org.androidtown.signalapplication.R;
+import org.androidtown.signalapplication.Server.Models.Meeting;
+import org.androidtown.signalapplication.Server.Models.User;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import io.realm.Realm;
+import io.realm.RealmChangeListener;
+import io.realm.RealmConfiguration;
+import io.realm.RealmQuery;
+import io.realm.RealmResults;
+import io.realm.Sort;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -34,6 +44,16 @@ public class HomeFragment extends Fragment {
     private String mParam2;
 
     private OnFragmentInteractionListener mListener;
+
+    Realm realm;
+
+    private RecyclerView.Adapter mRecyclerAdapter;
+
+    private RealmQuery<User> queryUser;
+    private RealmResults<User> resultsUser;
+
+    private RealmQuery<Meeting> queryMeeting;
+    private RealmResults<Meeting> resultsMeeting;
 
     final int ITEM_SIZE = 5;
 
@@ -65,32 +85,48 @@ public class HomeFragment extends Fragment {
         if (container == null) {
             return null;
         }
+        Realm.init(getActivity());
+        //RealmConfiguration realmConfiguration = new RealmConfiguration.Builder().build();
+        //Realm.setDefaultConfiguration(realmConfiguration);
+        realm = Realm.getDefaultInstance();
+        queryUser = realm.where(User.class);
+        resultsUser = queryUser.findAll();
+        resultsUser = resultsUser.sort("id", Sort.DESCENDING);
+
+        queryMeeting = realm.where(Meeting.class);
+        resultsMeeting = queryMeeting.findAll();
+        resultsMeeting = resultsMeeting.sort("id", Sort.DESCENDING);
 
         View view = inflater.inflate(R.layout.fragment_home, container, false);
 
-        RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.HomeRecyclerView);
+        CircleImageView recImgView1 = (CircleImageView) view.findViewById(R.id.reccommend_img_1);
+        CircleImageView recImgView2 = (CircleImageView) view.findViewById(R.id.reccommend_img_2);
+        CircleImageView recImgView3 = (CircleImageView) view.findViewById(R.id.reccommend_img_3);
+        CircleImageView recImgView4 = (CircleImageView) view.findViewById(R.id.reccommend_img_4);
+
+        //if(resultsUser.get(0).isValid())
+        //    recImgView1.setImageURI(Uri.parse(resultsUser.get(0).getProfilePhoto()));
+        //if(resultsUser.get(1).isValid())
+        //    recImgView2.setImageURI(Uri.parse(resultsUser.get(1).getProfilePhoto()));
+        //if(resultsUser.get(2).isValid())
+        //    recImgView3.setImageURI(Uri.parse(resultsUser.get(2).getProfilePhoto()));
+        //if(resultsUser.get(3).isValid())
+         //   recImgView4.setImageURI(Uri.parse(resultsUser.get(3).getProfilePhoto()));
+
+        final RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.HomeRecyclerView);
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity().getApplicationContext());
 
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(layoutManager);
 
-        List<CardItem> items = new ArrayList<>();
-
-        CardItem[] item = new CardItem[ITEM_SIZE];
-        // Item (image, userName, userTitle, meetingTitle, meetingContents)
-        //item[0] = new CardItem(R.drawable.p1, "김수현", "배우", "볼링치러 가요", "abc");
-        //item[1] = new CardItem(R.drawable.p2, "박보검", "뮤지컬배우", "같이 노래해요", "abc");
-        //item[2] = new CardItem(R.drawable.p3, "유아인", "비평론가", "독서 피크닉 떠나요", "abc");
-        //item[3] = new CardItem(R.drawable.p4, "송중기", "대한민국 육군 대위", "연극보러 갈까요?", "abc");
-        //item[4] = new CardItem(R.drawable.p5, "유승호", "CG", "루프탑 카페에서 디저트 먹어요", "abc");
-
-        for (int i = 0; i < ITEM_SIZE; i++) {
-            items.add(item[i]);
-
-        }
-
-        recyclerView.setAdapter(new RecyclerAdapter(getActivity().getApplicationContext(), items, R.layout.fragment_home));
+        resultsMeeting.addChangeListener(new RealmChangeListener<RealmResults<Meeting>>() {
+            @Override
+            public void onChange(RealmResults<Meeting> element) {
+                mRecyclerAdapter = new RecyclerAdapter(resultsMeeting, R.layout.fragment_home);
+                recyclerView.setAdapter(mRecyclerAdapter);
+            }
+        });
 
         return view;
     }

@@ -45,6 +45,7 @@ import org.androidtown.signalapplication.Server.Interface.AccountAPI;
 import org.androidtown.signalapplication.Server.Models.User;
 
 import io.realm.Realm;
+import io.realm.RealmConfiguration;
 import io.realm.RealmQuery;
 import io.realm.RealmResults;
 import retrofit2.Retrofit;
@@ -72,7 +73,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     private View mProgressView;
     private View mLoginFormView;
 
-    Realm realm;
+    private Realm realm;
 
 
 
@@ -83,6 +84,11 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         setContentView(R.layout.activity_login);
 
         Realm.init(this);
+        RealmConfiguration realmConfiguration = new RealmConfiguration
+                .Builder()
+                .deleteRealmIfMigrationNeeded()
+                .build();
+        Realm.setDefaultConfiguration(realmConfiguration);
 
         realm = Realm.getDefaultInstance();
 
@@ -256,6 +262,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
             Intent intent = new Intent(LoginActivity.this, MainActivity.class);
             startActivity(intent);
+            realm.close();
             finish();
         }
     }
@@ -267,7 +274,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
     private boolean isPasswordValid(String password) {
         //TODO: Replace this with your own logic
-        return password.length() > 4;
+        return password.length() > 2;
     }
 
     /**
@@ -380,10 +387,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         }
     }
 
-    /**
-     * Represents an asynchronous login/registration task used to authenticate
-     * the user.
-     */
+
     public class UserLoginTask extends AsyncTask<Void, Void, Boolean> {
 
         private final String mEmail;
@@ -401,7 +405,6 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
         @Override
         protected Boolean doInBackground(Void... params) {
-            // TODO: attempt authentication against a network service.
 
             try {
                 // Simulate network access.
@@ -409,15 +412,29 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             } catch (InterruptedException e) {
                 return false;
             }
+            final boolean[] tmp = {true};
 
-            if(user.size() == 0){
-                Toast.makeText(LoginActivity.this, "일치하는 회원정보가 없습니다", Toast.LENGTH_SHORT).show();
-            } else {
-                if(user.get(0).getUsername().equals(mEmail)){
-                    return user.get(0).getPassword().equals(mPassword);
+            Realm backGroundRealm = Realm.getDefaultInstance();
+            backGroundRealm.executeTransaction(new Realm.Transaction() {
+                @Override
+                public void execute(Realm realm) {
+                    RealmQuery<User> queryThread;
+                    RealmResults<User> userThread;
+                    queryThread = realm.where(User.class);
+                    userThread = queryThread.equalTo("username", mEmail).findAll();
+
+                    if(userThread.size() == 0)
+                        Toast.makeText(LoginActivity.this, "일치하는 회원정보가 없습니다", Toast.LENGTH_SHORT).show();
+                    else {
+                        if(userThread.get(0).getUsername().equals(mEmail))
+                            tmp[0] = userThread.get(0).getPassword().equals(mPassword);
+                    }
+
                 }
-            }
-            return true;
+            });
+
+            return tmp[0];
+
         }
 
         @Override
