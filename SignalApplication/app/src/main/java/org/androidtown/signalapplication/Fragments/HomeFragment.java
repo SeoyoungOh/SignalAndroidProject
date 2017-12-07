@@ -1,16 +1,19 @@
 package org.androidtown.signalapplication.Fragments;
 
 import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.widget.SearchView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import org.androidtown.signalapplication.Activities.SearchActivity;
 import org.androidtown.signalapplication.Adapter.RecyclerAdapter;
 import org.androidtown.signalapplication.CircleImageView;
 import org.androidtown.signalapplication.DataSetting.CardItem;
@@ -96,6 +99,15 @@ public class HomeFragment extends Fragment {
         resultsMeeting = resultsMeeting.sort("id", Sort.DESCENDING);
 
         View view = inflater.inflate(R.layout.fragment_home, container, false);
+
+        SearchView mSearchView = (SearchView) view.findViewById(R.id.search_view);
+        mSearchView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getActivity(), SearchActivity.class);
+                startActivity(intent);
+            }
+        });
 
         //cardview 처럼 adapter에 값 불러오는 것으로 수정하기
         CircleImageView recImgView1 = (CircleImageView) view.findViewById(R.id.reccommend_img_1);

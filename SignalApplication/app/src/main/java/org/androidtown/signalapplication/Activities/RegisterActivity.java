@@ -183,6 +183,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
                 user.setUsername(mUserID.getText().toString());
                 user.setPassword(mUserPW.getText().toString());
                 user.setProfilePhoto(mCurrentImgPath);
+                user.setUserFullName(mUserName.getText().toString());
             }
 
         });

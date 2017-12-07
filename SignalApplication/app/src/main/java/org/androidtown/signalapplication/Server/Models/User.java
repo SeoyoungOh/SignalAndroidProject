@@ -16,6 +16,7 @@ public class User extends RealmObject{
     private int id;
     @Required
     private String username;
+    private String userFullName;
     private String type;
     private String job;
     private String phoneNumber;
@@ -40,6 +41,14 @@ public class User extends RealmObject{
 
     public void setUsername(String username){
         this.username = username;
+    }
+
+    public String getUserFullName() {
+        return userFullName;
+    }
+
+    public void setUserFullName(String userFullName) {
+        this.userFullName = userFullName;
     }
 
     public String getType(){
