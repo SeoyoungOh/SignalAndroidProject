@@ -1,14 +1,32 @@
 package org.androidtown.signalapplication.Fragments;
 
 import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 
+import org.androidtown.signalapplication.Activities.CheckSignalActivity;
+import org.androidtown.signalapplication.Activities.MakeMeetingActivity;
+import org.androidtown.signalapplication.Adapter.RecyclerAdapter;
 import org.androidtown.signalapplication.R;
+import org.androidtown.signalapplication.Server.Models.Meeting;
+import org.androidtown.signalapplication.Server.Models.User;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import io.realm.Realm;
+import io.realm.RealmChangeListener;
+import io.realm.RealmQuery;
+import io.realm.RealmResults;
+import io.realm.Sort;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -30,6 +48,13 @@ public class MypageFragment extends Fragment {
 
     private OnFragmentInteractionListener mListener;
 
+    Realm realm;
+    private RecyclerView.Adapter mRecyclerAdapter;
+    private RealmQuery<User> queryUser;
+    private RealmResults<User> resultsUser;
+    private RealmQuery<Meeting> queryMeeting;
+    private RealmResults<Meeting> resultsMeeting;
+
     public MypageFragment() {
         // Required empty public constructor
     }
@@ -40,7 +65,7 @@ public class MypageFragment extends Fragment {
      *
      * @param param1 Parameter 1.
      * @param param2 Parameter 2.
-     * @return A new instance of fragment MypageFragment.
+     * @return A new instance of fragment MyPageFragment.
      */
     // TODO: Rename and change types and number of parameters
     public static MypageFragment newInstance(String param1, String param2) {
@@ -65,7 +90,62 @@ public class MypageFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_mypage, container, false);
+        if (container == null) {
+            return null;
+        }
+        View view = inflater.inflate(R.layout.fragment_mypage, container, false);
+
+        Button makeMeetingButton = (Button) view.findViewById(R.id.make_meeting_button);
+        Button checkSignalButton = (Button) view.findViewById(R.id.signal_check_button);
+
+        Realm.init(getActivity());
+        //RealmConfiguration realmConfiguration = new RealmConfiguration.Builder().build();
+        //Realm.setDefaultConfiguration(realmConfiguration);
+        realm = Realm.getDefaultInstance();
+        queryUser = realm.where(User.class);
+        resultsUser = queryUser.findAll();
+        resultsUser = resultsUser.sort("id",Sort.DESCENDING);
+
+
+        queryMeeting = realm.where(Meeting.class);
+        resultsMeeting = queryMeeting.findAll();
+        resultsMeeting = resultsMeeting.sort("id", Sort.DESCENDING);
+
+        makeMeetingButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //Fragment에서는 this 사용 불가능
+                //context 받아오는 getActivity() 사용
+                Intent i = new Intent(getActivity(), MakeMeetingActivity.class);
+                startActivity(i);
+
+            }
+        });
+
+        checkSignalButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(getActivity(), CheckSignalActivity.class);
+                startActivity(i);
+            }
+        });
+
+
+        final RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.myPageFragmentRecyclerView);
+
+        LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity().getApplicationContext());
+        recyclerView.setHasFixedSize(true);
+        recyclerView.setLayoutManager(layoutManager);
+
+        resultsMeeting.addChangeListener(new RealmChangeListener<RealmResults<Meeting>>() {
+            @Override
+            public void onChange(RealmResults<Meeting> element) {
+                mRecyclerAdapter = new RecyclerAdapter(resultsMeeting, R.layout.fragment_home);
+                recyclerView.setAdapter(mRecyclerAdapter);
+            }
+        });
+
+        return view;
     }
 
     // TODO: Rename method, update argument and hook method into UI event

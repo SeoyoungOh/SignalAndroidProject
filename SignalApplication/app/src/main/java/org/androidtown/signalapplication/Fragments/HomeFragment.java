@@ -55,8 +55,6 @@ public class HomeFragment extends Fragment {
     private RealmQuery<Meeting> queryMeeting;
     private RealmResults<Meeting> resultsMeeting;
 
-    final int ITEM_SIZE = 5;
-
     public HomeFragment() {
         // Required empty public constructor
     }
@@ -99,19 +97,12 @@ public class HomeFragment extends Fragment {
 
         View view = inflater.inflate(R.layout.fragment_home, container, false);
 
+        //cardview 처럼 adapter에 값 불러오는 것으로 수정하기
         CircleImageView recImgView1 = (CircleImageView) view.findViewById(R.id.reccommend_img_1);
         CircleImageView recImgView2 = (CircleImageView) view.findViewById(R.id.reccommend_img_2);
         CircleImageView recImgView3 = (CircleImageView) view.findViewById(R.id.reccommend_img_3);
         CircleImageView recImgView4 = (CircleImageView) view.findViewById(R.id.reccommend_img_4);
 
-        //if(resultsUser.get(0).isValid())
-        //    recImgView1.setImageURI(Uri.parse(resultsUser.get(0).getProfilePhoto()));
-        //if(resultsUser.get(1).isValid())
-        //    recImgView2.setImageURI(Uri.parse(resultsUser.get(1).getProfilePhoto()));
-        //if(resultsUser.get(2).isValid())
-        //    recImgView3.setImageURI(Uri.parse(resultsUser.get(2).getProfilePhoto()));
-        //if(resultsUser.get(3).isValid())
-         //   recImgView4.setImageURI(Uri.parse(resultsUser.get(3).getProfilePhoto()));
 
         final RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.HomeRecyclerView);
 

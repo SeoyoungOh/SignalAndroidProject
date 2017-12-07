@@ -8,6 +8,9 @@ import android.app.Instrumentation;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.os.Handler;
+import android.os.Looper;
+import android.os.Message;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
@@ -423,8 +426,15 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                     queryThread = realm.where(User.class);
                     userThread = queryThread.equalTo("username", mEmail).findAll();
 
-                    if(userThread.size() == 0)
-                        Toast.makeText(LoginActivity.this, "일치하는 회원정보가 없습니다", Toast.LENGTH_SHORT).show();
+                    if(userThread.size() == 0){
+                        Handler requestHandler = new Handler(Looper.getMainLooper());
+                        final Handler responseHandler = new Handler(Looper.getMainLooper()){
+                            @Override
+                            public void handleMessage(Message msg){
+                                Toast.makeText(LoginActivity.this, "일치하는 회원정보가 없습니다", Toast.LENGTH_SHORT).show();
+                            }
+                        };
+                    }
                     else {
                         if(userThread.get(0).getUsername().equals(mEmail))
                             tmp[0] = userThread.get(0).getPassword().equals(mPassword);

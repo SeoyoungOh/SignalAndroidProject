@@ -23,7 +23,7 @@ public class User extends RealmObject{
     @Required
     private String password;
 
-    private RealmList<Meeting> publishedMeeting;
+    private RealmList<Meeting> meeting;
 
     //getter and setter
 
@@ -77,13 +77,14 @@ public class User extends RealmObject{
         this.password = password;
     }
 
-    public RealmList<Meeting> getPublishedMeeting() {
-        return publishedMeeting;
+    public RealmList<Meeting> getMeeting() {
+        return meeting;
     }
 
-    public void setPublishedMeeting(RealmList<Meeting> publishedMeeting) {
-        this.publishedMeeting = publishedMeeting;
+    public void setMeeting(RealmList<Meeting> meeting) {
+        this.meeting = meeting;
     }
+
 
 
 

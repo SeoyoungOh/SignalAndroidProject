@@ -47,7 +47,9 @@
 
         <activity
             android:name=".Activities.MainActivity"
-            android:label="@string/title_activity_main"></activity>
+            android:label="@string/title_activity_main" />
+        <activity android:name=".Activities.MakeMeetingActivity" />
+        <activity android:name=".Activities.CheckSignalActivity"></activity>
     </application>
 
 </manifest>
